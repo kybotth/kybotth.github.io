@@ -61,7 +61,7 @@ const SubNavLinkButton = styled.button`
   &.active {
     color: white;
     /* border-bottom: 4px solid blue; */
-  }
+  },
 `;
 
 const Header = ({ currentSection, sectionsRefs }) => {
@@ -77,7 +77,7 @@ const Header = ({ currentSection, sectionsRefs }) => {
 
   return (
     <HeaderContainer className="navigation">
-      <div>
+      <div className="wrapper">
         <NavLinkUl>
           {sectionsRefs &&
             Object.keys(sectionsRefs).map((el, i) => (

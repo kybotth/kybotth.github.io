@@ -44,13 +44,13 @@ export default function Home({
       >
         <Posters page={pages[1]} />
       </Section>
-      <Section>
+      <Section className="wrapper">
         <Logos />
       </Section>
-      <Section>
+      <Section className="wrapper">
         <Events />
       </Section>
-      <Section>
+      <Section className="wrapper">
         <Personal page={pages[1]} />
       </Section>
       <Section

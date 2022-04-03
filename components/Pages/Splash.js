@@ -9,7 +9,7 @@ import { Content } from '../Content';
 
 const Splash = ({ page }) => {
   return (
-    <Content className="SPLASH" id={page} style={{ marginTop: 0 }}>
+    <Content className="SPLASH wrapper" id={page} style={{ marginTop: 0 }}>
       <AnimatePresence>
         <>
           <motion.div
