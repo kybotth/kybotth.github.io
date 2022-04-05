@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled from 'styled-components';
 import { wrap } from 'popmotion';
-import { v4 as uuidv4 } from 'uuid';
+import { useMedia } from '../../hooks/useMedia';
+import { Dot } from './Dot';
 
 import { Content } from '../Content';
 import Title from '../Title';
@@ -45,24 +46,9 @@ const swipePower = (offset, velocity) => {
   return Math.abs(offset) * velocity;
 };
 
-const Dot = styled.span`
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid white;
-  border-radius: 50%;
-  min-height: 10px;
-  min-width: 10px;
-  margin: 0 20px;
-  cursor: pointer;
-  content: '';
-
-  &.active {
-    background: white;
-    cursor: unset;
-  }
-`;
-
 const Posters = ({ page: pageId }) => {
   const [[page, direction], setPage] = useState([0, 0]);
+  const showMobile = useMedia('(max-width: 1100px)');
 
   // We only have 3 images, but we paginate them absolutely (ie 1, 2, 3, 4, 5...) and
   // then wrap that within 0-2 to find our image ID in the array below. By passing an
@@ -79,8 +65,8 @@ const Posters = ({ page: pageId }) => {
   };
 
   return (
-    <Content id={pageId}>
-      <Title>Posters/Banners</Title>
+    <Content id={pageId} className={`${showMobile ? 'mobile' : ''}`}>
+      <Title>{showMobile ? 'Posters' : 'Posters/Banners'}</Title>
       <SubTitle>DIGITAL &amp; PRINT</SubTitle>
       <hr style={{ maxWidth: 900, borderColor: '#ea9a27' }} />
       <br />
@@ -111,6 +97,11 @@ const Posters = ({ page: pageId }) => {
               }
             }}
           />
+          <img
+            style={{ opacity: 0, position: 'relative' }}
+            src={images[imageIndex]}
+            alt=""
+          />
         </AnimatePresence>
         {/* <div className="next" onClick={() => paginate(1)}>
           {'‣'}
@@ -123,7 +114,7 @@ const Posters = ({ page: pageId }) => {
         {images.map((dot, i) => (
           <Dot
             className={`${imageIndex === i ? 'active' : ''}`}
-            key={dot.src}
+            key={dot}
             onClick={imageIndex === i ? null : () => handleDotNavigation(i)}
           />
         ))}

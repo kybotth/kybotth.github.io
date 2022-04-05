@@ -9,8 +9,10 @@ import Title from '../Title';
 
 import logosGif from './images/logosGif.gif';
 import { useImageSize } from '../../hooks/useImageSize';
+import { Dot } from './Dot';
 
 import Image from 'next/image';
+import { useMedia } from '../../hooks/useMedia';
 
 const images = [
   '/images/logos01.jpg',
@@ -47,22 +49,6 @@ const swipePower = (offset, velocity) => {
   return Math.abs(offset) * velocity;
 };
 
-const Dot = styled.span`
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid white;
-  border-radius: 50%;
-  min-height: 10px;
-  min-width: 10px;
-  margin: 0 20px;
-  cursor: pointer;
-  content: '';
-
-  &.active {
-    background: white;
-    cursor: unset;
-  }
-`;
-
 const Split = styled.div`
   display: flex;
   flex-direction: row;
@@ -72,8 +58,9 @@ const Split = styled.div`
   }
 `;
 
-const Logos = ({ page: pageId }) => {
+const Logos = () => {
   const [[page, direction], setPage] = useState([0, 0]);
+  const showMobile = useMedia('(max-width: 1100px)');
 
   // We only have 3 images, but we paginate them absolutely (ie 1, 2, 3, 4, 5...) and
   // then wrap that within 0-2 to find our image ID in the array below. By passing an
@@ -90,10 +77,10 @@ const Logos = ({ page: pageId }) => {
   };
 
   return (
-    <Content>
-      <Split>
+    <Content className={`${showMobile ? 'mobile' : ''}`}>
+      <Split style={showMobile ? { flexDirection: 'column-reverse' } : {}}>
         <div>
-          <div className="slider-container-logos ">
+          <div className="slider-container-logos">
             <AnimatePresence initial={false} custom={direction}>
               <motion.img
                 key={`${page}-${imageIndex}`}
@@ -125,13 +112,18 @@ const Logos = ({ page: pageId }) => {
                   }
                 }}
               />
+              <img
+                style={{ opacity: 0, position: 'relative' }}
+                src={images[imageIndex]}
+                alt=""
+              />
             </AnimatePresence>
           </div>
           <div className="flex f-row" style={{ padding: '20px 0' }}>
             {images.map((dot, i) => (
               <Dot
                 className={`${imageIndex === i ? 'active' : ''}`}
-                key={dot.src}
+                key={uuidv4()}
                 onClick={imageIndex === i ? null : () => handleDotNavigation(i)}
               />
             ))}
@@ -139,12 +131,23 @@ const Logos = ({ page: pageId }) => {
         </div>
         <div>
           <br />
-          <Title style={{ fontSize: '100px' }}>Logos</Title>
+          <Title style={{ fontSize: '100px' }}>
+            Logos
+            {showMobile && (
+              <Image height="100px" width="100px" src={logosGif} alt="" />
+            )}
+          </Title>
           <br />
           <br />
-          <br />
+          {!showMobile && <br />}
           <hr style={{ maxWidth: 300, borderColor: '#ea9a27' }} />
-          <Image src={logosGif} alt="" />
+          {!showMobile ? (
+            <Image src={logosGif} alt="" />
+          ) : (
+            <>
+              <br />
+            </>
+          )}
         </div>
       </Split>
     </Content>

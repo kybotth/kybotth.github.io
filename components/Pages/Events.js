@@ -8,9 +8,11 @@ import Title from '../Title';
 
 import seasons from './images/seasons.gif';
 import { useImageSize } from '../../hooks/useImageSize';
+import { Dot } from './Dot';
 
 import Image from 'next/image';
 import { FixedRatioContainer } from '../ForcedRatioContainer';
+import { useMedia } from '../../hooks/useMedia';
 
 const images = [
   '/images/events01.jpg',
@@ -47,22 +49,6 @@ const swipePower = (offset, velocity) => {
   return Math.abs(offset) * velocity;
 };
 
-const Dot = styled.span`
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid white;
-  border-radius: 50%;
-  min-height: 10px;
-  min-width: 10px;
-  margin: 0 20px;
-  cursor: pointer;
-  content: '';
-
-  &.active {
-    background: white;
-    cursor: unset;
-  }
-`;
-
 const Split = styled.div`
   display: flex;
   flex-direction: row;
@@ -76,6 +62,7 @@ const Logos = ({ page: pageId }) => {
   const imageRef = useRef();
   const [height, setHeight] = useState(350);
   const [[page, direction], setPage] = useState([0, 0]);
+  const showMobile = useMedia('(max-width: 1100px)');
 
   // We only have 3 images, but we paginate them absolutely (ie 1, 2, 3, 4, 5...) and
   // then wrap that within 0-2 to find our image ID in the array below. By passing an
@@ -102,21 +89,38 @@ const Logos = ({ page: pageId }) => {
   }, [currentImage, imageIndex]);
 
   return (
-    <Content>
-      <Split>
+    <Content className={`${showMobile ? 'mobile' : ''}`}>
+      <Split style={showMobile ? { flexDirection: 'column' } : {}}>
         <div>
           <br />
-          <Title style={{ fontSize: '100px' }}>Events</Title>
+          <Title style={{ fontSize: '100px' }}>
+            Events
+            {showMobile && (
+              <div
+                style={{
+                  marginLeft: '10px',
+                  width: '70px',
+                  display: 'inline-block',
+                }}
+              >
+                <FixedRatioContainer>
+                  <Image src={seasons} alt="" layout="fill" />
+                </FixedRatioContainer>
+              </div>
+            )}
+          </Title>
           <br />
           <br />
-          <br />
+          {!showMobile && <br />}
           <hr style={{ maxWidth: 300, borderColor: '#ea9a27' }} />
           <br />
-          <div style={{ width: '200px', margin: '0 auto' }}>
-            <FixedRatioContainer>
-              <Image src={seasons} alt="" layout="fill" />
-            </FixedRatioContainer>
-          </div>
+          {!showMobile && (
+            <div style={{ width: '200px', margin: '0 auto' }}>
+              <FixedRatioContainer>
+                <Image src={seasons} alt="" layout="fill" />
+              </FixedRatioContainer>
+            </div>
+          )}
         </div>
         <div>
           <div
@@ -155,13 +159,18 @@ const Logos = ({ page: pageId }) => {
                   }
                 }}
               />
+              <img
+                style={{ opacity: 0, position: 'relative' }}
+                src={images[imageIndex]}
+                alt=""
+              />
             </AnimatePresence>
           </div>
           <div className="flex f-row" style={{ padding: '20px 0' }}>
             {images.map((dot, i) => (
               <Dot
                 className={`${imageIndex === i ? 'active' : ''}`}
-                key={dot.src}
+                key={dot}
                 onClick={imageIndex === i ? null : () => handleDotNavigation(i)}
               />
             ))}

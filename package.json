@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "framer-motion": "^6.2.8",
+    "hamburgers": "^1.2.1",
     "lodash": "^4.17.21",
     "next": "12.1.0",
     "popmotion": "^11.0.3",

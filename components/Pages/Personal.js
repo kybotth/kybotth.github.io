@@ -6,6 +6,8 @@ import { useImageSize } from '../../hooks/useImageSize';
 
 import { Content } from '../Content';
 import Title from '../Title';
+import { useMedia } from '../../hooks/useMedia';
+import { Dot } from './Dot';
 
 const images = [
   '/images/personal01.jpg',
@@ -47,26 +49,11 @@ const swipePower = (offset, velocity) => {
   return Math.abs(offset) * velocity;
 };
 
-const Dot = styled.span`
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid white;
-  border-radius: 50%;
-  min-height: 10px;
-  min-width: 10px;
-  margin: 0 20px;
-  cursor: pointer;
-  content: '';
-
-  &.active {
-    background: white;
-    cursor: unset;
-  }
-`;
-
 const Personal = ({ page: pageId }) => {
   const imageRef = useRef();
   const [[page, direction], setPage] = useState([0, 0]);
   const [height, setHeight] = useState(350);
+  const showMobile = useMedia('(max-width: 1100px)');
 
   // We only have 3 images, but we paginate them absolutely (ie 1, 2, 3, 4, 5...) and
   // then wrap that within 0-2 to find our image ID in the array below. By passing an
@@ -97,15 +84,15 @@ const Personal = ({ page: pageId }) => {
   }, [currentImage, getHeight]);
 
   return (
-    <Content>
-      <Title>Personal Projects</Title>
+    <Content className={`${showMobile ? 'mobile' : ''}`}>
+      <Title>Personal{!showMobile && <> Projects</>}</Title>
       <br />
       <hr style={{ maxWidth: 900, borderColor: '#ea9a27' }} />
       <br />
       <div
         className="slider-container-logos"
         // className="slider-container"
-        style={{ height: `${height}px`, width: '900px' }}
+        // style={{ height: `${height}px`, width: '900px' }}
       >
         <AnimatePresence initial={false} custom={direction}>
           <motion.img
@@ -134,6 +121,11 @@ const Personal = ({ page: pageId }) => {
               }
             }}
           />
+          <img
+            style={{ opacity: 0, position: 'relative' }}
+            src={images[imageIndex]}
+            alt=""
+          />
         </AnimatePresence>
         {/* <div className="next" onClick={() => paginate(1)}>
           {'‣'}
@@ -146,7 +138,7 @@ const Personal = ({ page: pageId }) => {
         {images.map((dot, i) => (
           <Dot
             className={`${imageIndex === i ? 'active' : ''}`}
-            key={dot.src}
+            key={dot}
             onClick={imageIndex === i ? null : () => handleDotNavigation(i)}
           />
         ))}

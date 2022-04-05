@@ -8,6 +8,7 @@ import Title from '../Title';
 import LinkedInIcon from './images/LinkedIn_Icon.png';
 import PhoneIcon from './images/phone_icon.png';
 import EmailIcon from './images/gmail_icon.png';
+import { useMedia } from '../../hooks/useMedia';
 
 const LinkText = styled.span`
   color: rgba(255, 255, 255, 0.8);
@@ -40,70 +41,76 @@ const SpanBottomBorder2 = styled.div`
 `;
 
 const Personal = ({ page: pageId }) => {
+  const showMobile = useMedia('(max-width: 1100px)');
   const rowSpacing = 40;
   return (
     <Content id={pageId}>
-      <Title>LET&apos;S GET IN TOUCH</Title>
+      <Title>
+        {!showMobile && <>LET&apos;S GET IN TOUCH</>}
+        {showMobile && <>LET&apos;S CHAT</>}
+      </Title>
       <br />
       <hr style={{ maxWidth: 900, borderColor: '#ea9a27' }} />
       <br />
       <table style={{ margin: '0 auto', width: '100%', maxWidth: '600px' }}>
-        <tr>
-          <td>
-            <a
-              href="https://www.linkedin.com/in/tue-ho-11a613143/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              <AnimatedIcon background="rgb(254,131,110)">
-                <Image src={LinkedInIcon} layout="fill" alt="" />
-              </AnimatedIcon>
-              {/* <Image src={LinkedIn} alt="LinkedIn" /> */}
-            </a>
-          </td>
-          <td>
-            {/* <a href="tel:2516227567">
+        <tbody>
+          <tr>
+            <td>
+              <a
+                href="https://www.linkedin.com/in/tue-ho-11a613143/"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <AnimatedIcon background="rgb(254,131,110)">
+                  <Image src={LinkedInIcon} layout="fill" alt="" />
+                </AnimatedIcon>
+                {/* <Image src={LinkedIn} alt="LinkedIn" /> */}
+              </a>
+            </td>
+            <td>
+              {/* <a href="tel:2516227567">
               <LinkText>LinkedIn</LinkText>
             </a>
             <SpanBottomBorder1 /> */}
-          </td>
-        </tr>
-        <tr>
-          <td style={{ paddingTop: `${rowSpacing}px` }}>
-            <a href="tel:2516227567">
-              <AnimatedIcon background="rgb(133,108,254)">
-                <Image src={PhoneIcon} alt="Phone" />
-              </AnimatedIcon>
-            </a>
-          </td>
-          <td style={{ paddingTop: `${rowSpacing}px` }}>
-            <a href="tel:2516227567">
-              <LinkText>(251) 622 7567</LinkText>
-            </a>
-            <SpanBottomBorder1 />
-          </td>
-        </tr>
-        <tr>
-          <td style={{ paddingTop: `${rowSpacing}px` }}>
-            <a href="mailto:kybotth@gmail.com">
-              <AnimatedIcon background="rgb(30,161,134)">
-                <Image src={EmailIcon} alt="Email" />
-              </AnimatedIcon>
-            </a>
-          </td>
-          <td style={{ paddingTop: `${rowSpacing}px` }}>
-            <a href="mailto:kybotth@gmail.com">
-              <LinkText>kybotth@gmail.com</LinkText>
-            </a>
-            <SpanBottomBorder2 />
-          </td>
-        </tr>
-        {/* <tr>
+            </td>
+          </tr>
+          <tr>
+            <td style={{ paddingTop: `${rowSpacing}px` }}>
+              <a href="tel:2516227567">
+                <AnimatedIcon background="rgb(133,108,254)">
+                  <Image src={PhoneIcon} alt="Phone" />
+                </AnimatedIcon>
+              </a>
+            </td>
+            <td style={{ paddingTop: `${rowSpacing}px` }}>
+              <a href="tel:2516227567">
+                <LinkText>(251) 622 7567</LinkText>
+              </a>
+              <SpanBottomBorder1 />
+            </td>
+          </tr>
+          <tr>
+            <td style={{ paddingTop: `${rowSpacing}px` }}>
+              <a href="mailto:kybotth@gmail.com">
+                <AnimatedIcon background="rgb(30,161,134)">
+                  <Image src={EmailIcon} alt="Email" />
+                </AnimatedIcon>
+              </a>
+            </td>
+            <td style={{ paddingTop: `${rowSpacing}px` }}>
+              <a href="mailto:kybotth@gmail.com">
+                <LinkText>kybotth@gmail.com</LinkText>
+              </a>
+              <SpanBottomBorder2 />
+            </td>
+          </tr>
+          {/* <tr>
           <td>
-            <AnimatedIcon />
+          <AnimatedIcon />
           </td>
           <td></td>
         </tr> */}
+        </tbody>
       </table>
     </Content>
   );

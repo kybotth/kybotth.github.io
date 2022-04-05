@@ -78,6 +78,11 @@ export const useScrollSpy = (elements) => {
     };
 
     const positions = Object.keys(elements).map((el) => {
+      if (!elements[el].current)
+        return {
+          y: 9999,
+          key: el,
+        };
       return {
         y: elements[el].current.getBoundingClientRect().y,
         key: el,

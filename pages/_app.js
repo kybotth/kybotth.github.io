@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import Head from 'next/head';
 import '../styles/globals.css';
 import { Layout } from '../components/';
 import CurrentScrolledSection from '../components/CurrentScrolledSection';
@@ -16,6 +17,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+      <Head>
+        <meta name="viewport" content="initial-scale=1.0,width=device-width" />
+      </Head>
       <ScrollToTop />
       <CurrentScrolledSection
         sectionsRefs={sectionsRefs}

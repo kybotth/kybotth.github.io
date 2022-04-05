@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import styled from 'styled-components';
+import { useMedia } from '../../hooks/useMedia';
 
 import { Content } from '../Content';
 import Title from '../Title';
@@ -8,6 +9,7 @@ import Butt from './images/butt.png';
 import CuteBoi from './images/cuteboi.png';
 
 const About = ({ page: pageId }) => {
+  const showMobile = useMedia('(max-width: 1100px)');
   const TextBox = styled.div`
     background: rgb(212, 212, 212);
     background: linear-gradient(
@@ -38,7 +40,7 @@ const About = ({ page: pageId }) => {
   `;
 
   return (
-    <Content id={pageId}>
+    <Content id={pageId} className={`${showMobile ? 'mobile' : ''}`}>
       <div style={{ transform: 'translateX(-80px)' }}>
         <Title>About Me</Title>
         <br />

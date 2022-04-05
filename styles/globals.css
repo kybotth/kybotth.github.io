@@ -48,11 +48,18 @@ a {
 * {
   box-sizing: border-box;
 }
-
+.asideContent {
+  overflow: hidden;
+}
 .slider-container img {
   position: absolute;
   max-width: 100%;
   border-radius: 40px;
+}
+.mobile .slider-container-logos,
+.mobile .slider-container {
+  height: auto;
+  width: 100%;
 }
 .slider-container {
   height: 600px;
