@@ -72,6 +72,10 @@ const NavLinkButton = styled.button`
   box-shadow: none;
   padding: 0 20px;
   cursor: pointer;
+  &.active {
+    color: white;
+    /* border-bottom: 4px solid blue; */
+  }
 `;
 
 const NavLinkButtonIcon = styled.button`

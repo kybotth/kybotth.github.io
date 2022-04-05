@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { links } from '../pages/_app';
 
 /**
@@ -45,56 +45,64 @@ export const useScrollSpy = (elements) => {
   const lastKnownScrollPosition = useRef(0);
   const ticking = useRef(false);
 
-  const handleFindCurrent = (needle) => {
-    const closestToZero = (numbers) => {
-      if (!numbers.length) {
-        return 0;
-      }
-
-      let closest = { y: 0 };
-
-      numbers = numbers.reduce((acc, o) => {
-        if (o.y < window.innerHeight / 2) {
-          return acc.concat([o]);
+  const handleFindCurrent = useCallback(
+    (needle) => {
+      const closestToZero = (numbers) => {
+        if (!numbers.length) {
+          return 0;
         }
-        return acc;
-      }, []);
 
-      for (let i = 0; i < numbers.length; i++) {
-        if (closest.y === 0) {
-          closest = numbers[i];
-        } else if (numbers[i].y > 0 && numbers[i].y <= Math.abs(closest.y)) {
-          closest = numbers[i];
-        } else if (numbers[i].y < 0 && -numbers[i].y < Math.abs(closest.y)) {
-          closest = numbers[i];
+        let closest = { y: 0 };
+
+        numbers = numbers.reduce((acc, o) => {
+          if ((o.y < window.innerHeight) / 2) {
+            return acc.concat([o]);
+          }
+          return acc;
+        }, []);
+
+        for (let i = 0; i < numbers.length; i++) {
+          if (closest.y === 0) {
+            console.log('set1');
+            closest = numbers[i];
+          } else if (numbers[i].y >= 0 && numbers[i].y <= Math.abs(closest.y)) {
+            console.log('set2');
+            closest = numbers[i];
+          } else if (numbers[i].y <= 0 && -numbers[i].y < Math.abs(closest.y)) {
+            console.log('set3');
+            closest = numbers[i];
+          }
         }
-      }
 
-      return closest
-        ? closest
-        : {
-            key: 'WELCOME',
+        console.log({ closest }, { numbers });
+
+        return closest
+          ? closest
+          : {
+              key: 'WELCOME',
+            };
+      };
+
+      const positions = Object.keys(elements).map((el) => {
+        if (!elements[el].current)
+          return {
+            y: 9999,
+            key: el,
           };
-    };
-
-    const positions = Object.keys(elements).map((el) => {
-      if (!elements[el].current)
         return {
-          y: 9999,
+          y: elements[el].current.getBoundingClientRect().y,
           key: el,
         };
-      return {
-        y: elements[el].current.getBoundingClientRect().y,
-        key: el,
-      };
-    });
+      });
 
-    const goToElement = elements[closestToZero(positions).key];
+      const goToElement = elements[closestToZero(positions).key];
 
-    console.log(goToElement);
+      console.log({ goToElement });
 
-    setCurrentElement(goToElement);
-  };
+      setCurrentElement(goToElement);
+    },
+    [elements]
+  );
 
   useEffect(() => {
     const handleScroll = (e) => {
@@ -113,7 +121,7 @@ export const useScrollSpy = (elements) => {
     document.addEventListener('scroll', handleScroll);
 
     return () => document.removeElementListener('scroll', handleScroll);
-  }, []);
+  }, [handleFindCurrent]);
 
   return currentElement;
 };
