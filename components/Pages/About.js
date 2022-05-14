@@ -124,6 +124,18 @@ const About = ({ page: pageId }) => {
             develop as well as brand promotion abroad to attract foreign
             teachers to teach English to Vietnamese children with my designs.
           </P>
+          <P>
+            Check out my{' '}
+            <a
+              href="https://behance.net/kyboho"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#ea9a27', textDecoration: 'underline' }}
+            >
+              Behance
+            </a>{' '}
+            content!
+          </P>
         </TextBox>
       </div>
     </Content>

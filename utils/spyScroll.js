@@ -74,8 +74,6 @@ export const useScrollSpy = (elements) => {
           }
         }
 
-        console.log({ closest }, { numbers });
-
         return closest
           ? closest
           : {
@@ -96,8 +94,6 @@ export const useScrollSpy = (elements) => {
       });
 
       const goToElement = elements[closestToZero(positions).key];
-
-      console.log({ goToElement });
 
       setCurrentElement(goToElement);
     },
